@@ -1,7 +1,7 @@
 import string, csv
 
 continuity_html = open('continuity.cgi', 'r').read()
-wins_html = open('NBA_wins.html', 'r').read()
+wins_html = open('nba_wins.html', 'r').read()
 
 teams = ["ATL", "BOS", "CHA", "CHI", "CLE", "DAL", "DEN", "DET", "GSW", "HOU", "IND", "LAC", "LAL", "MEM", "MIA", "MIL", "MIN", "NJN", "NOH", "NYK", "OKC", "ORL", "PHI", "PHO", "POR", "SAC", "SAS", "TOR", "UTA", "WAS"]
 

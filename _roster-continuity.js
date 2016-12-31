@@ -11,30 +11,45 @@ var x = d3.scaleTime().range([0, width]),
 var xAxis = d3.axisBottom(x).tickFormat(function(d){return d.getFullYear() + '-' + String(d.getFullYear()+1).slice(2,4)}),
     yAxis = d3.axisLeft(y).tickFormat(function(d) { return d+'%' });
 
-var wins_line = d3.area()
+
+var continuity = d3.area()
     .x(function(d) { return x(d.date) })
-    .y(function(d) { return y(d.wins) })
+    .y0(function(d) {return y(d.wins)-d.noise })
+    .y1(function(d) { return y(d.wins)+d.noise })
     .curve(d3.curveMonotoneX);
+
+var wins = d3.line()
+    .x(function(d) { return x(d.date) })
+    .y(function(d) {return y(d.wins) })
+    .curve(d3.curveMonotoneX);
+/*
+var zoom = d3.zoom()
+    .scaleExtent([1, Infinity])
+    .translateExtent([[0, 0], [width, height]])
+    .extent([[0, 0], [width, height]])
+    .on("zoom", zoomed);
+    */
 
 svg.append("text")
     .attr("transform", "translate(" + (width/2) + "," + (margin.top/2+20) + ")")
     .attr("text-anchor", "middle")  
     .style("font-size", "20px") 
+    .style("font-family", "sans-serif")
     .text("Does roster continuity impact number of wins?");
 
 svg.append("text")
     .attr("transform", "translate(" + (margin.left-45) + "," + (height/2) + " )rotate(270)")
     .attr("text-anchor", "middle")  
     .style("font-size", "16px") 
+    .style("font-family", "sans-serif")
     .text("Win Percentage");
 
 svg.append("text")
     .attr("transform", "translate(" + (width/2) + "," + (height+margin.top+margin.bottom) + ")")
     .attr("text-anchor", "middle")  
     .style("font-size", "16px") 
+    .style("font-family", "sans-serif")
     .text("Season");
-
-
 
 var g = svg.append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -51,8 +66,12 @@ d3.csv("GSW_data.csv", type, function(error, data) {
     y.domain([0, 100]);
 
     g.append("path")
-    .attr("class", "wins-line")
-    .attr("d", wins_line(data)); 
+    .attr("class", "area")
+    .attr("d",continuity(data)); 
+
+    g.append("path")
+    .attr("class", "line")
+    .attr("d", wins(data)); 
 
     g.append("g")
     .attr("class", "axis axis--x")

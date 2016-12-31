@@ -1,5 +1,5 @@
 var svg = d3.select("svg"),
-    margin = {top: 20, right: 20, bottom: 30, left: 40},
+    margin = {top: 30, right: 30, bottom: 40, left: 60},
     width = +svg.attr("width") - margin.left - margin.right,
     height = +svg.attr("height") - margin.top - margin.bottom;
 
@@ -8,23 +8,32 @@ var x = d3.scaleTime().range([0, width]),
     y = d3.scaleLinear().range([height, 0]);
     colors = d3.scaleOrdinal
 
-var xAxis = d3.axisBottom(x).tickFormat(function(d){return d.getFullYear() + '-' + String(d.getFullYear()+1).slice(2,4)})
-            , yAxis = d3.axisLeft(y);
+var xAxis = d3.axisBottom(x).tickFormat(function(d){return d.getFullYear() + '-' + String(d.getFullYear()+1).slice(2,4)}),
+    yAxis = d3.axisLeft(y).tickFormat(function(d) { return d+'%' });
 
-var noise_line = d3.line()
+var wins_line = d3.area()
     .x(function(d) { return x(d.date) })
-    .y(function(d) { return y(d.noise) });
-
-var wins_line = d3.line()
-    .x(function(d) { return x(d.date) })
-    .y(function(d) { return y(d.wins) });
+    .y(function(d) { return y(d.wins) })
+    .curve(d3.curveMonotoneX);
 
 svg.append("text")
-    .attr("x", (width / 2))             
-    .attr("y", (margin.top / 2)+20)
+    .attr("transform", "translate(" + (width/2) + "," + (margin.top/2+20) + ")")
     .attr("text-anchor", "middle")  
     .style("font-size", "20px") 
     .text("Does roster continuity impact number of wins?");
+
+svg.append("text")
+    .attr("transform", "translate(" + (margin.left-45) + "," + (height/2) + " )rotate(270)")
+    .attr("text-anchor", "middle")  
+    .style("font-size", "16px") 
+    .text("Win Percentage");
+
+svg.append("text")
+    .attr("transform", "translate(" + (width/2) + "," + (height+margin.top+margin.bottom) + ")")
+    .attr("text-anchor", "middle")  
+    .style("font-size", "16px") 
+    .text("Season");
+
 
 
 var g = svg.append("g")
@@ -44,10 +53,6 @@ d3.csv("GSW_data.csv", type, function(error, data) {
     g.append("path")
     .attr("class", "wins-line")
     .attr("d", wins_line(data)); 
-
-    g.append("path")
-    .attr("class", "noise-line")
-    .attr("d", noise_line(data)); 
 
     g.append("g")
     .attr("class", "axis axis--x")

@@ -1,27 +1,48 @@
 var svg = d3.select("svg"),
-    margin = {top: 30, right: 30, bottom: 40, left: 60},
+    margin = {top: 30, right: 80, bottom: 40, left: 60},
+    margin2 = {top: 430, right: 20, bottom: 30, left: 40},
     width = +svg.attr("width") - margin.left - margin.right,
     height = +svg.attr("height") - margin.top - margin.bottom;
+    height2 = +svg.attr("height") - margin2.top - margin2.bottom;
 
 
 var x = d3.scaleTime().range([0, width]),
+    x2 = d3.scaleTime().range([0, width]),
     y = d3.scaleLinear().range([height, 0]);
-    colors = d3.scaleOrdinal
+    y2 = d3.scaleLinear().range([height2, 0]);
 
 var xAxis = d3.axisBottom(x).tickFormat(function(d){return d.getFullYear() + '-' + String(d.getFullYear()+1).slice(2,4)}),
+    xAxis2 = d3.axisBottom(x2),
     yAxis = d3.axisLeft(y).tickFormat(function(d) { return d+'%' });
 
-
-var continuity = d3.area()
+/*
+var brush = d3.brushX()
+      .extent([[0, 0], [width, height2]])
+      .on("brush end", brushed);
+*/
+var noise1 = d3.area()
+    .curve(d3.curveMonotoneX)
     .x(function(d) { return x(d.date) })
-    .y0(function(d) {return y(d.wins)-d.noise })
-    .y1(function(d) { return y(d.wins)+d.noise })
-    .curve(d3.curveMonotoneX);
+    .y0(function(d) {return y(d.wins)-d.noise*.6 })
+    .y1(function(d) { return y(d.wins)+d.noise*.6 });
 
-var wins = d3.line()
+var noise2 = d3.area()
+    .curve(d3.curveMonotoneX)
+    .x(function(d) { return x2(d.date) })
+    .y0(function(d) {return y2(d.wins)-d.noise*.6 })
+    .y1(function(d) { return y2(d.wins)+d.noise*.6 });
+
+var wins1 = d3.line()
+    .curve(d3.curveMonotoneX)
     .x(function(d) { return x(d.date) })
-    .y(function(d) {return y(d.wins) })
-    .curve(d3.curveMonotoneX);
+    .y(function(d) {return y(d.wins) });
+
+var wins2 = d3.line()
+    .curve(d3.curveMonotoneX)
+    .x(function(d) { return x2(d.date) })
+    .y(function(d) {return y2(d.wins) });
+
+
 /*
 var zoom = d3.zoom()
     .scaleExtent([1, Infinity])
@@ -54,6 +75,7 @@ svg.append("text")
 var g = svg.append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+
 d3.csv("GSW_data.csv", type, function(error, data) {
     if (error) throw error;
 
@@ -67,11 +89,13 @@ d3.csv("GSW_data.csv", type, function(error, data) {
 
     g.append("path")
     .attr("class", "area")
-    .attr("d",continuity(data)); 
+    .attr("d", noise1(data));
 
     g.append("path")
     .attr("class", "line")
-    .attr("d", wins(data)); 
+    .attr("d", wins1(data))
+    .on("mouseover", handleMouseOver)
+    .on("mouseout", function() { circle.style("display", "none");  focus.style("display", "none"); });
 
     g.append("g")
     .attr("class", "axis axis--x")
@@ -82,7 +106,34 @@ d3.csv("GSW_data.csv", type, function(error, data) {
     .attr("class", "axis axis--y")
     .call(yAxis);
 
+
+
+
 });
+
+var circle = svg.append("circle")
+  .attr("r", 4.5)
+  .attr("class", "circle");
+
+var focus = svg.append("text")
+  .style("display", "none")
+  .style("font-size", "10px")
+  .style("font-family", "sans-serif");
+
+function handleMouseOver(d, i) {
+  var mouseX = d3.mouse(this)[0],
+      mouseY = d3.mouse(this)[1]; 
+
+  circle.attr("transform", "translate(" + (mouseX+margin.left) + "," + (mouseY+margin.top) + ")")
+    .style("display", "block");
+
+  focus.attr("transform", "translate(" + (mouseX+margin.left+10) + "," + (mouseY+margin.top) + ")")
+    .style("display", "block")
+    .text("(" + x.invert(mouseX).getFullYear() + ", " + (y.invert(mouseY)).toFixed(2) + "%)");
+}
+
+
+
 
 var parseDate = d3.timeParse("%Y");
 function type(d) {

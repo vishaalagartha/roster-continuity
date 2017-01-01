@@ -43,14 +43,6 @@ var wins2 = d3.line()
     .y(function(d) {return y2(d.wins) });
 
 
-/*
-var zoom = d3.zoom()
-    .scaleExtent([1, Infinity])
-    .translateExtent([[0, 0], [width, height]])
-    .extent([[0, 0], [width, height]])
-    .on("zoom", zoomed);
-    */
-
 svg.append("text")
     .attr("transform", "translate(" + (width/2) + "," + (margin.top/2+20) + ")")
     .attr("text-anchor", "middle")  
@@ -93,9 +85,17 @@ d3.csv("GSW_data.csv", type, function(error, data) {
 
     g.append("path")
     .attr("class", "line")
-    .attr("d", wins1(data))
-    .on("mouseover", handleMouseOver)
-    .on("mouseout", function() { circle.style("display", "none");  focus.style("display", "none"); });
+    .attr("d", wins1(data));
+
+    g.selectAll("circle")
+    .data(data)
+    .enter().append("circle")
+    .attr( "class", "circle")
+    .attr( "r", 2)
+    .attr( "cx", function(d) { return x(d.date) } )
+    .attr( "cy", function(d) { return y(d.wins) } )
+    .on( "mouseover", handleMouseOver )
+    .on( "mouseout", handleMouseOut );
 
     g.append("g")
     .attr("class", "axis axis--x")
@@ -106,34 +106,24 @@ d3.csv("GSW_data.csv", type, function(error, data) {
     .attr("class", "axis axis--y")
     .call(yAxis);
 
-
-
-
 });
 
-var circle = svg.append("circle")
-  .attr("r", 4.5)
-  .attr("class", "circle");
-
-var focus = svg.append("text")
+var label = svg.append("text")
   .style("display", "none")
-  .style("font-size", "10px")
-  .style("font-family", "sans-serif");
+  .style("font", "10px sans-serif");
 
 function handleMouseOver(d, i) {
   var mouseX = d3.mouse(this)[0],
       mouseY = d3.mouse(this)[1]; 
 
-  circle.attr("transform", "translate(" + (mouseX+margin.left) + "," + (mouseY+margin.top) + ")")
-    .style("display", "block");
-
-  focus.attr("transform", "translate(" + (mouseX+margin.left+10) + "," + (mouseY+margin.top) + ")")
+  label.attr("transform", "translate(" + (mouseX+margin.left+10) + "," + (mouseY+margin.top) + ")")
     .style("display", "block")
     .text("(" + x.invert(mouseX).getFullYear() + ", " + (y.invert(mouseY)).toFixed(2) + "%)");
 }
 
-
-
+function handleMouseOut(d, i) {
+  label.style("display", "none");
+}
 
 var parseDate = d3.timeParse("%Y");
 function type(d) {

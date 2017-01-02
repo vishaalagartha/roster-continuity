@@ -69,6 +69,13 @@ var context = svg.append("g")
     .attr("transform", "translate(" + margin2.left + "," + margin2.top + ")");
 
 
+    svg.append("defs").append("clipPath")
+    .attr("id", "clip")
+    .append("rect")
+    .attr("width", width)
+    .attr("height", height);
+
+
 d3.csv("GSW_data.csv", type, function(error, data) {
     if (error) throw error;
 
@@ -84,17 +91,20 @@ d3.csv("GSW_data.csv", type, function(error, data) {
 
     focus.append("path")
     .datum(data)
+    .attr("clip-path", "url(#clip)")
     .attr("class", "area")
     .attr("d", noise1(data));
 
     focus.append("path")
     .datum(data)
+    .attr("clip-path", "url(#clip)")
     .attr("class", "line")
     .attr("d", wins1(data));
 
     focus.selectAll("circle")
     .data(data)
     .enter().append("circle")
+    .attr("clip-path", "url(#clip)")
     .attr( "class", "circle")
     .attr( "r", 2)
     .attr( "cx", function(d) { return x(d.date) } )
@@ -153,8 +163,12 @@ function brushed() {
   var s = d3.event.selection || x2.range();
   x.domain(s.map(x2.invert, x2));
   focus.select(".axis--x").call(xAxis);
-  focus.select(".area").attr("d", noise1);
-  //focus.select(".area").attr("d", wins1);
+  focus.selectAll(".area").attr("d", noise1);
+  focus.selectAll(".line").attr("d", function(d) {return wins1(d) });
+  focus.selectAll("circle")
+  .attr( "cx", function(d) { return x(d.date) } )
+  .attr( "cy", function(d) { return y(d.wins) } )
+
 }
 
 var parseDate = d3.timeParse("%Y");

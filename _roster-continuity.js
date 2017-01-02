@@ -115,6 +115,9 @@ d3.csv("GSW_data.csv", type, function(error, data) {
     .attr( "r", 4)
     .attr( "cx", function(d) { return x(d.date) } )
     .attr( "cy", function(d) { return y(d.wins) } )
+    .on("mouseover", handleMouseOver)
+    .on("mouseout", handleMouseOut);
+
 
     focus.append("g")
     .attr("class", "axis axis--x")
@@ -148,7 +151,7 @@ d3.csv("GSW_data.csv", type, function(error, data) {
       .attr("width", width)
       .attr("height", height)
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
-      .on("mousemove", handleMouseMoved)
+      .on("mouseover", function() { console.log(d3.event); })
       .call(zoom);
 
 });
@@ -156,6 +159,23 @@ d3.csv("GSW_data.csv", type, function(error, data) {
 var label = svg.append("text")
   .style("display", "none")
   .style("font", "10px sans-serif");
+
+function handleMouseOver(d, i) {
+  var mouseX = d3.mouse(this)[0],
+      mouseY = d3.mouse(this)[1]; 
+  var mouseDate = x.invert(mouseX),
+      mouseWins = y.invert(mouseY);
+
+  label.attr("transform", "translate(" + (mouseX+margin.left+10) + "," + (mouseY+margin.top) + ")")
+    .style("display", "block")
+    .text("(" + mouseDate.getFullYear() + ", " + mouseWins.toFixed(2) + "%)");
+
+}
+
+function handleMouseOut(d, i) {
+  label.style("display", "none");
+
+}
 
 function handleMouseMoved(d, i) {
   var mouseX = d3.mouse(this)[0],

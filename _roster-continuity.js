@@ -18,6 +18,12 @@ var brush = d3.brushX()
       .extent([[0, 0], [width, height2]])
       .on("brush end", brushed);
 
+var zoom = d3.zoom()
+      .scaleExtent([1, 10])
+      .translateExtent([[0, 0], [width, height]])
+      .extent([[0, 0], [width, height]])
+      .on("zoom", zoomed);
+
 var noise1 = d3.area()
     .curve(d3.curveMonotoneX)
     .x(function(d) { return x(d.date) })
@@ -106,11 +112,9 @@ d3.csv("GSW_data.csv", type, function(error, data) {
     .enter().append("circle")
     .attr("clip-path", "url(#clip)")
     .attr( "class", "circle")
-    .attr( "r", 2)
+    .attr( "r", 4)
     .attr( "cx", function(d) { return x(d.date) } )
     .attr( "cy", function(d) { return y(d.wins) } )
-    .on( "mouseover", handleMouseOver )
-    .on( "mouseout", handleMouseOut );
 
     focus.append("g")
     .attr("class", "axis axis--x")
@@ -134,11 +138,18 @@ d3.csv("GSW_data.csv", type, function(error, data) {
     .attr("transform", "translate(0," + height2 + ")")
     .call(xAxis2);
 
-
     context.append("g")
       .attr("class", "brush")
       .call(brush)
       .call(brush.move, x.range());
+
+    svg.append("rect")
+      .attr("class", "zoom")
+      .attr("width", width)
+      .attr("height", height)
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+      .on("mousemove", handleMouseMoved)
+      .call(zoom);
 
 });
 
@@ -146,20 +157,34 @@ var label = svg.append("text")
   .style("display", "none")
   .style("font", "10px sans-serif");
 
-function handleMouseOver(d, i) {
+function handleMouseMoved(d, i) {
   var mouseX = d3.mouse(this)[0],
       mouseY = d3.mouse(this)[1]; 
+  var mouseDate = x.invert(mouseX),
+      mouseWins = y.invert(mouseY);
+  var deltaWin = .5;
+  var mouseOver = false;
+  focus.selectAll("circle").filter(function(d,i){
+    var startDate = new Date(d.date.getTime());
+    var endDate = new Date(d.date.getTime());
+    startDate.setDate(d.date.getDate()-20);
+    endDate.setDate(d.date.getDate()+20);
+    if(mouseDate>startDate && mouseDate<endDate && mouseWins<(d.wins+deltaWin) && mouseWins>(d.wins-deltaWin))
+    {
+      label.attr("transform", "translate(" + (mouseX+margin.left+10) + "," + (mouseY+margin.top) + ")")
+        .style("display", "block")
+        .text("(" + mouseDate.getFullYear() + ", " + mouseWins.toFixed(2) + "%)");
+      mouseOver = true;
+    }
+  });
 
-  label.attr("transform", "translate(" + (mouseX+margin.left+10) + "," + (mouseY+margin.top) + ")")
-    .style("display", "block")
-    .text("(" + x.invert(mouseX).getFullYear() + ", " + (y.invert(mouseY)).toFixed(2) + "%)");
-}
+  if(!mouseOver)
+    label.style("display", "none");
 
-function handleMouseOut(d, i) {
-  label.style("display", "none");
 }
 
 function brushed() {
+  if (d3.event.sourceEvent && d3.event.sourceEvent.type === "zoom") return; // ignore brush-by-zoom
   var s = d3.event.selection || x2.range();
   x.domain(s.map(x2.invert, x2));
   focus.select(".axis--x").call(xAxis);
@@ -169,7 +194,27 @@ function brushed() {
   .attr( "cx", function(d) { return x(d.date) } )
   .attr( "cy", function(d) { return y(d.wins) } )
 
+  svg.select(".zoom").call(zoom.transform, d3.zoomIdentity
+      .scale(width / (s[1] - s[0]))
+      .translate(-s[0], 0));
+
 }
+
+function zoomed() {
+  if (d3.event.sourceEvent && d3.event.sourceEvent.type === "brush") return; // ignore zoom-by-brush
+  var mouseX = d3.mouse(this)[0],
+      mouseY = d3.mouse(this)[1]; 
+  var t = d3.event.transform;
+  x.domain(t.rescaleX(x2).domain());
+  focus.select(".axis--x").call(xAxis);
+  focus.selectAll(".area").attr("d", noise1);
+  focus.selectAll(".line").attr("d", function(d) {return wins1(d) });
+  focus.selectAll("circle")
+  .attr( "cx", function(d) { return x(d.date) } )
+  .attr( "cy", function(d) { return y(d.wins) } )
+  context.select(".brush").call(brush.move, x.range().map(t.invertX, t));
+}
+
 
 var parseDate = d3.timeParse("%Y");
 function type(d) {

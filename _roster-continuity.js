@@ -107,6 +107,13 @@ d3.csv("data/GSW_data.csv", type, function(error, data) {
     .attr("class", "line")
     .attr("d", wins1(data));
 
+    focus.append("rect")
+      .attr("class", "zoom")
+      .attr("width", width)
+      .attr("height", height)
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+      .call(zoom);
+
     focus.selectAll("circle")
     .data(data)
     .enter().append("circle")
@@ -127,12 +134,6 @@ d3.csv("data/GSW_data.csv", type, function(error, data) {
     .attr("class", "axis axis--y")
     .call(yAxis);
 
-    focus.append("rect")
-      .attr("class", "zoom")
-      .attr("width", width)
-      .attr("height", height)
-      .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
-      .call(zoom);
 
     context.append("path")
     .attr("class", "area")

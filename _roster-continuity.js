@@ -118,7 +118,6 @@ d3.csv("GSW_data.csv", type, function(error, data) {
     .on("mouseover", handleMouseOver)
     .on("mouseout", handleMouseOut);
 
-
     focus.append("g")
     .attr("class", "axis axis--x")
     .attr("transform", "translate(0," + height + ")")
@@ -127,6 +126,13 @@ d3.csv("GSW_data.csv", type, function(error, data) {
     focus.append("g")
     .attr("class", "axis axis--y")
     .call(yAxis);
+
+    focus.append("rect")
+      .attr("class", "zoom")
+      .attr("width", width)
+      .attr("height", height)
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+      .call(zoom);
 
     context.append("path")
     .attr("class", "area")
@@ -145,14 +151,6 @@ d3.csv("GSW_data.csv", type, function(error, data) {
       .attr("class", "brush")
       .call(brush)
       .call(brush.move, x.range());
-
-    svg.append("rect")
-      .attr("class", "zoom")
-      .attr("width", width)
-      .attr("height", height)
-      .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
-      .on("mouseover", function() { console.log(d3.event); })
-      .call(zoom);
 
 });
 

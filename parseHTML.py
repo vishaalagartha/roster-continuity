@@ -43,11 +43,12 @@ while index!=-1:
                 if team in data[season]:
                     data[season][team].append(season_data[c+6:c+8])
     index = string.find(wins_html, season_string)
-with open('data.csv', 'wb') as csvfile:
-    writer = csv.writer(csvfile)
-    writer.writerow(["year", "team", "continuity", "wins"])
-    for year in data:
-        for team in data[year]:
-            if len(data[year][team])==2:
+for team in teams:
+    filename = team+'_data.csv'
+    with open(filename, 'wb') as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow(["year", "team", "continuity", "wins"])
+        for year in data:
+            if team in data[year] and len(data[year][team])==2:
                 r = [year, team, data[year][team][0], data[year][team][1]]
                 writer.writerow(r)

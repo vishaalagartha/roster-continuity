@@ -82,7 +82,7 @@ var context = svg.append("g")
     .attr("height", height);
 
 
-d3.csv("GSW_data.csv", type, function(error, data) {
+d3.csv("data/GSW_data.csv", type, function(error, data) {
     if (error) throw error;
 
     data.sort(function(d1, d2){

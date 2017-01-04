@@ -1,7 +1,7 @@
 var buildChart = function(team) {
   var svg = d3.select("svg#"+team),
-      margin = {top: 20, right: 80, bottom: 110, left: 60},
-      margin2 = {top: 430, right: 80, bottom: 30, left: 60},
+      margin = {top: 20, right: 100, bottom: 110, left: 60},
+      margin2 = {top: 430, right: 100, bottom: 30, left: 60},
       width = +svg.attr("width") - margin.left - margin.right,
       height = +svg.attr("height") - margin.top - margin.bottom,
       height2 = +svg.attr("height") - margin2.top - margin2.bottom;
@@ -53,7 +53,7 @@ var buildChart = function(team) {
       .attr("text-anchor", "middle")  
       .style("font-size", "20px") 
       .style("font-family", "sans-serif")
-      .text(team + " Win Percentage and Continuity");
+      .text(team);
 
   svg.append("text")
       .attr("transform", "translate(" + (margin.left-45) + "," + (height/2) + " )rotate(270)")
@@ -168,38 +168,12 @@ var buildChart = function(team) {
 
     label.attr("transform", "translate(" + (mouseX+margin.left+10) + "," + (mouseY+margin.top) + ")")
       .style("display", "block")
-      .text("(" + mouseDate.getFullYear() + ", " + mouseWins.toFixed(2) + "%)");
+      .text("(" + mouseDate.getFullYear()+'-'+(mouseDate.getFullYear()+1).toString().slice(2,4) + ", " + mouseWins.toFixed(2) + "%)");
 
   }
 
   function handleMouseOut(d, i) {
     label.style("display", "none");
-
-  }
-
-  function handleMouseMoved(d, i) {
-    var mouseX = d3.mouse(this)[0],
-        mouseY = d3.mouse(this)[1]; 
-    var mouseDate = x.invert(mouseX),
-        mouseWins = y.invert(mouseY);
-    var deltaWin = .5;
-    var mouseOver = false;
-    focus.selectAll("circle").filter(function(d,i){
-      var startDate = new Date(d.date.getTime());
-      var endDate = new Date(d.date.getTime());
-      startDate.setDate(d.date.getDate()-20);
-      endDate.setDate(d.date.getDate()+20);
-      if(mouseDate>startDate && mouseDate<endDate && mouseWins<(d.wins+deltaWin) && mouseWins>(d.wins-deltaWin))
-      {
-        label.attr("transform", "translate(" + (mouseX+margin.left+10) + "," + (mouseY+margin.top) + ")")
-          .style("display", "block")
-          .text("(" + mouseDate.getFullYear() + ", " + mouseWins.toFixed(2) + "%)");
-        mouseOver = true;
-      }
-    });
-
-    if(!mouseOver)
-      label.style("display", "none");
 
   }
 

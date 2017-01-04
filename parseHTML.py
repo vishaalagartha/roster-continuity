@@ -3,7 +3,7 @@ import string, csv
 continuity_html = open('continuity.cgi', 'r').read()
 wins_html = open('nba_wins.html', 'r').read()
 
-teams = ["ATL", "BOS", "CHA", "CHI", "CLE", "DAL", "DEN", "DET", "GSW", "HOU", "IND", "LAC", "LAL", "MEM", "MIA", "MIL", "MIN", "NJN", "NOH", "NYK", "OKC", "ORL", "PHI", "PHO", "POR", "SAC", "SAS", "TOR", "UTA", "WAS"]
+teams = ["ATL", "BOS", "CHA", "CHI", "CLE", "DAL", "DEN", "DET", "GSW", "HOU", "IND", "LAC", "LAL", "MEM", "MIA", "MIL", "MIN", "BRK", "NOP", "NYK", "OKC", "ORL", "PHI", "PHO", "POR", "SAC", "SAS", "TOR", "UTA", "WAS"]
 
 season = []
 
@@ -46,6 +46,7 @@ while index!=-1:
                         wins+=season_data[c+7]
                     data[season][team].append(wins)
     index = string.find(wins_html, season_string)
+
 for team in teams:
     filename = team+'_data.csv'
     with open(filename, 'wb') as csvfile:

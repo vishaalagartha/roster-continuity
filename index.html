@@ -1,39 +1,39 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <style>
-  .MIL-area { fill: #00330A; }
-  .MIL-circle { fill: #C82A39; pointer-events: all; }
-  .MIL-line { fill: none; stroke: #FFFFFF; stroke-width: 2; stroke-linecap: round; }
-  .GSW-area { fill: #002942; }
-  .GSW-circle { fill: #E75E25; pointer-events: all; }
-  .GSW-line { fill: none; stroke: #FFC33C; stroke-width: 2; stroke-linecap: round; }
+  .MIL-area { fill: #00471B; }
+  .MIL-circle { fill: #000000; pointer-events: all; }
+  .MIL-line { fill: none; stroke: #EEE1C6; stroke-width: 2; stroke-linecap: round; }
+  .GSW-area { fill: #006BB6; }
+  .GSW-circle { fill: #B6BFBF; pointer-events: all; }
+  .GSW-line { fill: none; stroke: #FDB927; stroke-width: 2; stroke-linecap: round; }
   .MIN-area { fill: #015287; }
   .MIN-circle { fill: #000000; pointer-events: all; }
   .MIN-line { fill: none; stroke: #EFEFEF; stroke-width: 2; stroke-linecap: round; }
-  .MIA-area { fill: #B62630; }
-  .MIA-circle { fill: #1E3344; pointer-events: all; }
-  .MIA-line { fill: none; stroke: #FF9F00; stroke-width: 2; stroke-linecap: round; }
+  .MIA-area { fill: #98002E; }
+  .MIA-circle { fill: #000000; pointer-events: all; }
+  .MIA-line { fill: none; stroke: #F9A01B; stroke-width: 2; stroke-linecap: round; }
   .ATL-area { fill: #01244C; }
   .ATL-circle { fill: #D21033; pointer-events: all; }
-  .ATL-line { fill: none; stroke: #FFFFFF; stroke-width: 2; stroke-linecap: round; }
+  .ATL-line { fill: none; stroke: #A1A1A4; stroke-width: 2; stroke-linecap: round; }
   .BOS-area { fill: #05854C; }
-  .BOS-circle { fill: #EAEFE9; pointer-events: all; }
-  .BOS-line { fill: none; stroke: #FFFFFF; stroke-width: 2; stroke-linecap: round; }
+  .BOS-circle { fill: #000000; pointer-events: all; }
+  .BOS-line { fill: none; stroke: #C0C0C0; stroke-width: 2; stroke-linecap: round; }
   .DET-area { fill: #ED174C; }
   .DET-circle { fill: #006BB6; pointer-events: all; }
-  .DET-line { fill: none; stroke: #FFFFFF; stroke-width: 2; stroke-linecap: round; }
-  .BRK-area { fill: #002258; }
-  .BRK-circle { fill: #D32E4C; pointer-events: all; }
-  .BRK-line { fill: none; stroke: #EFEFF1; stroke-width: 2; stroke-linecap: round; }
-  .NYK-area { fill: #2E66B2; }
-  .NYK-circle { fill: #FF5C2B; pointer-events: all; }
-  .NYK-line { fill: none; stroke: #FFFFFF; stroke-width: 2; stroke-linecap: round; }
+  .DET-line { fill: none; stroke: #B6BFBF; stroke-width: 2; stroke-linecap: round; }
+  .BRK-area { fill: #000000; }
+  .BRK-circle { fill: #A1A1A4; pointer-events: all; }
+  .BRK-line { fill: none; stroke: #B6BFBF; stroke-width: 2; stroke-linecap: round; }
+  .NYK-area { fill: #F58426; }
+  .NYK-circle { fill: #006BB6; pointer-events: all; }
+  .NYK-line { fill: none; stroke: #BEC0C2; stroke-width: 2; stroke-linecap: round; }
   .DEN-area { fill: #4393D1; }
   .DEN-circle { fill: #FBB529; pointer-events: all; }
-  .DEN-line { fill: none; stroke: #FFFFFF; stroke-width: 2; stroke-linecap: round; }
+  .DEN-line { fill: none; stroke: #B6BFBF; stroke-width: 2; stroke-linecap: round; }
   .DAL-area { fill: #006AB5; }
   .DAL-circle { fill: #F0F4F7; pointer-events: all; }
-  .DAL-line { fill: none; stroke: #FFFFFF; stroke-width: 2; stroke-linecap: round; }
+  .DAL-line { fill: none; stroke: #A1A1A4; stroke-width: 2; stroke-linecap: round; }
   .POR-area { fill: #000000; }
   .POR-circle { fill: #E1393E; pointer-events: all; }
   .POR-line { fill: none; stroke: #B4BDC3; stroke-width: 2; stroke-linecap: round; }
@@ -45,13 +45,13 @@
   .TOR-line { fill: none; stroke: #000000; stroke-width: 2; stroke-linecap: round; }
   .CHI-area { fill: #D4001F; }
   .CHI-circle { fill: #000000; pointer-events: all; }
-  .CHI-line { fill: none; stroke: #FFFFFF; stroke-width: 2; stroke-linecap: round; }
-  .SAS-area { fill: #743389; }
-  .SAS-circle { fill: #DCE2E4; pointer-events: all; }
-  .SAS-line { fill: none; stroke: #000000; stroke-width: 2; stroke-linecap: round; }
-  .CHA-area { fill: #F26532; }
-  .CHA-circle { fill: #29588B; pointer-events: all; }
-  .CHA-line { fill: none; stroke: #FFFFFF; stroke-width: 2; stroke-linecap: round; }
+  .CHI-line { fill: none; stroke: #A1A1A4; stroke-width: 2; stroke-linecap: round; }
+  .SAS-area { fill: #000000; }
+  .SAS-circle { fill: #B6BFBF; pointer-events: all; }
+  .SAS-line { fill: none; stroke: #B6BFBF; stroke-width: 2; stroke-linecap: round; }
+  .CHA-area { fill: #008CA8; }
+  .CHA-circle { fill: #1D1160; pointer-events: all; }
+  .CHA-line { fill: none; stroke: #A1A1A4; stroke-width: 2; stroke-linecap: round; }
   .UTA-area { fill: #001D4D; }
   .UTA-circle { fill: #448CCE; pointer-events: all; }
   .UTA-line { fill: none; stroke: #480975; stroke-width: 2; stroke-linecap: round; }
@@ -59,38 +59,38 @@
   .CLE-circle { fill: #003375; pointer-events: all; }
   .CLE-line { fill: none; stroke: #B99D6A; stroke-width: 2; stroke-linecap: round; }
   .HOU-area { fill: #CC0000; }
-  .HOU-circle { fill: #FFFFFF; pointer-events: all; }
-  .HOU-line { fill: none; stroke: #FFFFFF; stroke-width: 2; stroke-linecap: round; }
+  .HOU-circle { fill: #B6BFBF; pointer-events: all; }
+  .HOU-line { fill: none; stroke: #B6BFBF; stroke-width: 2; stroke-linecap: round; }
   .PHO-area { fill: #48286C; }
   .PHO-circle { fill: #FF7A31; pointer-events: all; }
   .PHO-line { fill: none; stroke: #FFBC1E; stroke-width: 2; stroke-linecap: round; }
   .WAS-area { fill: #004874; }
   .WAS-circle { fill: #BC9B6A; pointer-events: all; }
-  .WAS-line { fill: none; stroke: #FFFFFF; stroke-width: 2; stroke-linecap: round; }
+  .WAS-line { fill: none; stroke: #B6BFBF; stroke-width: 2; stroke-linecap: round; }
   .LAL-area { fill: #4A2583; }
   .LAL-circle { fill: #F5AF1B; pointer-events: all; }
-  .LAL-line { fill: none; stroke: #FFFFFF; stroke-width: 2; stroke-linecap: round; }
-  .PHI-area { fill: #C5003D; }
-  .PHI-circle { fill: #000000; pointer-events: all; }
-  .PHI-line { fill: none; stroke: #C7974D; stroke-width: 2; stroke-linecap: round; }
-  .NOP-area { fill: #0095CA; }
-  .NOP-circle { fill: #1D1060; pointer-events: all; }
-  .NOP-line { fill: none; stroke: #FEBB25; stroke-width: 2; stroke-linecap: round; }
+  .LAL-line { fill: none; stroke: #A1A1A4; stroke-width: 2; stroke-linecap: round; }
+  .PHI-area { fill: #006BB6; }
+  .PHI-circle { fill: #ED174C; pointer-events: all; }
+  .PHI-line { fill: none; stroke: #A1A1A4; stroke-width: 2; stroke-linecap: round; }
+  .NOP-area { fill: #002B5C; }
+  .NOP-circle { fill: #E31937; pointer-events: all; }
+  .NOP-line { fill: none; stroke: #B4975A; stroke-width: 2; stroke-linecap: round; }
   .MEM-area { fill: #001B41; }
   .MEM-circle { fill: #85A2C6; pointer-events: all; }
-  .MEM-line { fill: none; stroke: #FFFFFF; stroke-width: 2; stroke-linecap: round; }
+  .MEM-line { fill: none; stroke: #B6BFBF; stroke-width: 2; stroke-linecap: round; }
   .LAC-area { fill: #EE2944; }
   .LAC-circle { fill: #146AA2; pointer-events: all; }
-  .LAC-line { fill: none; stroke: #FFFFFF; stroke-width: 2; stroke-linecap: round; }
-  .SAC-area { fill: #000000; }
-  .SAC-circle { fill: #BEC8C9; pointer-events: all; }
-  .SAC-line { fill: none; stroke: #FFFFFF; stroke-width: 2; stroke-linecap: round; }
+  .LAC-line { fill: none; stroke: #B6BFBF; stroke-width: 2; stroke-linecap: round; }
+  .SAC-area { fill: #724C9F; }
+  .SAC-circle { fill: #000000; pointer-events: all; }
+  .SAC-line { fill: none; stroke: #8E9090; stroke-width: 2; stroke-linecap: round; }
   .ORL-area { fill: #077ABD; }
   .ORL-circle { fill: #C5CED5; pointer-events: all; }
   .ORL-line { fill: none; stroke: #000000; stroke-width: 2; stroke-linecap: round; }
   .IND-area { fill: #002E62; }
   .IND-circle { fill: #FFC225; pointer-events: all; }
-  .IND-line { fill: none; stroke: #FFFFFF; stroke-width: 2; stroke-linecap: round; }
+  .IND-line { fill: none; stroke: #B6BFBF; stroke-width: 2; stroke-linecap: round; }
 
 
   .zoom {

@@ -212,11 +212,18 @@ var buildChart = function(team) {
 
   var parseDate = d3.timeParse("%Y");
   function type(d) {
-      return { label: d.year
+      var wins = +d.wins;
+      d = { label: d.year
              , date: parseDate(d.year.split("-")[0])
              , noise: 100-parseFloat(d.continuity) 
-             , wins: (+d.wins)/82*100
              };
+      if(d.label=="1998-99")
+        d.wins = wins/50*100;
+      else if(d.label=="2011-12")
+        d.wins = wins/66*100;
+      else
+        d.wins = wins/82*100;
+      return d;
   }
 }
 
